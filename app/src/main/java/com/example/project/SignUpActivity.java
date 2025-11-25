@@ -49,6 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(this, "Enter a valid email", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (!pass.matches(".*\\d.*") || !pass.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+                Toast.makeText(this, "Password must contain at least one number and one special character", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             sb.upsertUser(email, name, pass, new Callback() {
                 @Override
