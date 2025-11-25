@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Supmentors</string>
+    <string name="get_started">Get Started</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="tasks">My Tasks</string>
+    <string name="stats">Statistical</string>
+    <string name="account">Account</string>
+    <string name="enroll_now">Enroll Now</string>
+    <string name="supabase_url">https://ypsrgzksxbxujrcbilog.supabase.co</string>
+    <string name="supabase_key">sb_publishable_4FB5a2Danm75PflhdkpLUQ_1rnZ_TaP</string>
+
+</resources>

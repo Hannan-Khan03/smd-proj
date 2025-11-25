@@ -1,0 +1,16 @@
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+    <style name="TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_muted</item>
+    </style>
+</resources>

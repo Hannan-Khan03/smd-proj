@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883408616821",
+    "project_id": "smdproj-b2ce1",
+    "storage_bucket": "smdproj-b2ce1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883408616821:android:85407db41612d5c735a73c",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ulfoQYHmFeJMBvGExuJMZU8218ROfE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

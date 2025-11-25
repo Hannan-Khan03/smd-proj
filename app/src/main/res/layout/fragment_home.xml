@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_account"
+                    android:background="@drawable/circle_bg"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="10dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome back!"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="user"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_muted"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:background="@drawable/rounded_card"
+            android:elevation="3dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/tvHeroTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Keep Growing, Keep Learning! 🚀"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/tvHeroSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Every skill you learn adds power to your future. Let’s achieve something great today! "
+                android:textSize="14sp"
+                android:textColor="@color/text_muted"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="4dp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="14dp"
+            android:background="@drawable/rounded_field">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_search"
+                android:tint="@color/text_muted" />
+
+            <EditText
+                android:id="@+id/etHomeSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Search here"
+                android:background="@android:color/transparent"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_muted"
+                android:layout_marginStart="10dp"
+                android:textSize="14sp"
+                android:inputType="text" />
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Featured Courses"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCourses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>
