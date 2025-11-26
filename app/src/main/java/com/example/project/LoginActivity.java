@@ -1,7 +1,6 @@
 package com.example.project;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +18,11 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText etEmail, etPassword;
     Button btnLogin;
-    TextView tvSignup, tvForgot;
+    TextView tvSignup, tvForgot, tvAppName;
     SupabaseClient sb;
+
+    boolean isAdminMode = false;
+    int secretTapCount = 0;
 
     @Override
     protected void onCreate(Bundle s) {
@@ -34,6 +36,15 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvSignup = findViewById(R.id.tvSignup);
         tvForgot = findViewById(R.id.tvForgot);
+        tvAppName = findViewById(R.id.tvAppName);
+
+        tvAppName.setOnClickListener(v -> {
+            secretTapCount++;
+            if (secretTapCount == 7) {
+                isAdminMode = true;
+                Toast.makeText(this, "Admin mode enabled", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -64,26 +75,37 @@ public class LoginActivity extends AppCompatActivity {
 
                     String storedPass = u.get("password") == null ? "" : String.valueOf(u.get("password"));
                     String fullName = u.get("full_name") == null ? "" : String.valueOf(u.get("full_name"));
-                    String createdAt = u.get("created_at") == null ? "" : String.valueOf(u.get("created_at"));
+                    String role = u.get("role") == null ? "user" : String.valueOf(u.get("role"));
 
                     if (!storedPass.equals(pass)) {
                         runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show());
                         return;
                     }
 
-                    SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                    prefs.edit()
-                            .putString("full_name", fullName)
-                            .putString("user_email", email)
-                            .putString("created_at", createdAt)
-                            .apply();
+                    if (!isAdminMode && role.equals("admin")) {
+                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Admin cannot login from user mode", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+
+                    if (isAdminMode && !role.equals("admin")) {
+                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "User cannot login in admin mode", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
 
                     SupabaseSession.sessionEmail = email;
                     SupabaseSession.sessionName = fullName;
+                    SupabaseSession.userRole = role;
                     SupabaseSession.needsRefresh = true;
 
                     runOnUiThread(() -> {
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent i;
+
+                        if (role.equals("admin")) {
+                            i = new Intent(LoginActivity.this, AdminAddCourseActivity.class);
+                        } else {
+                            i = new Intent(LoginActivity.this, MainActivity.class);
+                        }
+
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         finish();
@@ -92,7 +114,14 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
 
-        tvSignup.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
+        tvSignup.setOnClickListener(v -> {
+            if (isAdminMode) {
+                Toast.makeText(this, "Admin accounts cannot be created here", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            }
+        });
+
         tvForgot.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class)));
     }
 }
