@@ -77,28 +77,20 @@ public class SearchFragment extends Fragment {
 
     private void filter() {
         String q = etSearch.getText().toString().toLowerCase().trim();
-
         ArrayList<Course> filtered = new ArrayList<>();
 
         for (Course c : originalList) {
-            boolean matchesSearch = c.title.toLowerCase().contains(q);
 
-            boolean matchesCategory = true;
+            boolean matchesSearch =
+                    c.title.toLowerCase().contains(q);
 
-            if (activeFilter.equals("Programming")) {
-                matchesCategory =
-                        c.title.toLowerCase().contains("python") ||
-                                c.title.toLowerCase().contains("java") ||
-                                c.title.toLowerCase().contains("android") ||
-                                c.title.toLowerCase().contains("ui") ||
-                                c.title.toLowerCase().contains("ux");
-            } else if (activeFilter.equals("Marketing")) {
-                matchesCategory = c.title.toLowerCase().contains("marketing");
-            } else if (activeFilter.equals("Stats")) {
-                matchesCategory = c.title.toLowerCase().contains("stat");
+            boolean matchesCategory =
+                    activeFilter.equals("All") ||
+                            c.type.equalsIgnoreCase(activeFilter);
+
+            if (matchesSearch && matchesCategory) {
+                filtered.add(c);
             }
-
-            if (matchesSearch && matchesCategory) filtered.add(c);
         }
 
         list.clear();
@@ -136,7 +128,6 @@ public class SearchFragment extends Fragment {
                 String body = response.body().string();
                 List<Integer> enrolledIds = SupabaseClient.parseCourseIdResponse(body);
                 Set<Integer> set = new HashSet<>(enrolledIds);
-                SupabaseSession.enrolledIds = new ArrayList<>(enrolledIds);
 
                 sb.fetchAllCourses(new Callback() {
                     @Override public void onFailure(Call call, IOException e) { loadAllFallback(); }
@@ -146,7 +137,6 @@ public class SearchFragment extends Fragment {
                         List<Course> out = SupabaseClient.parseCoursesResponse(json);
 
                         List<Course> filtered = new ArrayList<>();
-
                         for (Course c : out) {
                             if (!set.contains(c.id)) filtered.add(c);
                         }

@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent i;
 
                         if (role.equals("admin")) {
-                            i = new Intent(LoginActivity.this, AdminAddCourseActivity.class);
+                            i = new Intent(LoginActivity.this, AdminMainActivity.class);
                         } else {
                             i = new Intent(LoginActivity.this, MainActivity.class);
                         }

@@ -3,24 +3,14 @@ package com.example.project;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import androidx.recyclerview.widget.*;
+import okhttp3.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HomeFragment extends Fragment {
 
@@ -29,7 +19,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Course> list = new ArrayList<>();
     EditText etSearch;
     TextView tvUsername;
-    ImageView imgAvatar;
+    ImageView imgAvatar, imgBell;
     SupabaseClient sb;
 
     @Nullable
@@ -45,9 +35,18 @@ public class HomeFragment extends Fragment {
         etSearch = v.findViewById(R.id.etHomeSearch);
         tvUsername = v.findViewById(R.id.tvUsername);
         imgAvatar = v.findViewById(R.id.imgAvatar);
+        imgBell = v.findViewById(R.id.imgBell);
 
-        tvUsername.setText("Welcome back, " + SupabaseSession.sessionName);
+        tvUsername.setText(SupabaseSession.sessionName);
         imgAvatar.setImageResource(R.drawable.ic_account);
+
+        imgBell.setOnClickListener(v1 -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new NotificationsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         adapter = new CourseAdapter(requireContext(), list, "Home");
         rv.setAdapter(adapter);
@@ -55,8 +54,8 @@ public class HomeFragment extends Fragment {
         loadCourses();
 
         etSearch.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            @Override public void onTextChanged(CharSequence s, int st, int b, int c) {}
             @Override public void afterTextChanged(Editable s) { filter(s.toString()); }
         });
 
@@ -64,58 +63,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadCourses() {
-        String email = SupabaseSession.sessionEmail;
-
-        if (email == null || email.isEmpty()) {
-            loadAllFallback();
-            return;
-        }
-
-        sb.fetchEnrolledCourseIds(email, new Callback() {
-            @Override public void onFailure(Call call, IOException e) {
-                loadAllFallback();
-            }
-
-            @Override public void onResponse(Call call, Response response) throws IOException {
-                String body = response.body().string();
-                List<Integer> enrolledIds = SupabaseClient.parseCourseIdResponse(body);
-                Set<Integer> set = new HashSet<>(enrolledIds);
-
-                sb.fetchAllCourses(new Callback() {
-                    @Override public void onFailure(Call call, IOException e) { loadAllFallback(); }
-
-                    @Override public void onResponse(Call call, Response response) throws IOException {
-                        String json = response.body().string();
-                        List<Course> out = SupabaseClient.parseCoursesResponse(json);
-
-                        List<Course> filtered = new ArrayList<>();
-                        for (Course c : out) {
-                            if (!set.contains(c.id)) filtered.add(c);
-                        }
-
-                        if (!isAdded()) return;
-
-                        requireActivity().runOnUiThread(() -> {
-                            list.clear();
-                            list.addAll(filtered);
-                            adapter.updateList(list);
-                        });
-                    }
-                });
-            }
-        });
-    }
-
-    private void loadAllFallback() {
         sb.fetchAllCourses(new Callback() {
             @Override public void onFailure(Call call, IOException e) {}
 
             @Override public void onResponse(Call call, Response response) throws IOException {
-                String json = response.body().string();
-                List<Course> out = SupabaseClient.parseCoursesResponse(json);
-
+                List<Course> out = SupabaseClient.parseCoursesResponse(response.body().string());
                 if (!isAdded()) return;
-
                 requireActivity().runOnUiThread(() -> {
                     list.clear();
                     list.addAll(out);

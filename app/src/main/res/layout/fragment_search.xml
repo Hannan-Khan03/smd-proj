@@ -32,6 +32,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:hint="Search"
+                android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_muted"
                 android:layout_marginStart="10dp"
                 android:textSize="14sp"/>

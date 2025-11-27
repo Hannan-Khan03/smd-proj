@@ -29,7 +29,7 @@
         <activity android:name=".CourseDetailsActivity" android:exported="false" />
         <activity android:name=".PaymentActivity" android:exported="false" />
         <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".AdminAddCourseActivity" android:exported="false"/>
+        <activity android:name=".AdminMainActivity" android:exported="false" />
 
     </application>
 
